@@ -1,12 +1,14 @@
 import { PrismicPreview } from "@prismicio/next";
 import { repositoryName } from "@/prismicio";
-import './global.css';
-import {DM_Sans} from 'next/font/google';
+import "./global.css";
+import { DM_Sans } from "next/font/google";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const dmSans = DM_Sans({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-dm-sans',
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-dm-sans",
 });
 
 export default function RootLayout({
@@ -16,7 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={dmSans.variable}>
-      <body className="bg-red-500">{children}</body>
+      <body className="bg-[#070815] text-white">
+        <Header />
+        <main>{children}</main>
+      </body>
+      <Footer />
       <PrismicPreview repositoryName={repositoryName} />
     </html>
   );
