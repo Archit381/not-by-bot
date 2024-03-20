@@ -4,7 +4,11 @@ import type * as prismic from "@prismicio/client";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
-type PageDocumentDataSlicesSlice = ShowcaseSlice | HeroSlice | RichTextSlice;
+type PageDocumentDataSlicesSlice =
+  | InputSlice
+  | ShowcaseSlice
+  | HeroSlice
+  | RichTextSlice;
 
 /**
  * Content for Page documents
@@ -260,6 +264,68 @@ type HeroSliceVariation = HeroSliceDefault;
  * - **Documentation**: https://prismic.io/docs/slice
  */
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
+
+/**
+ * Primary content in *Input → Primary*
+ */
+export interface InputSliceDefaultPrimary {
+  /**
+   * Heading field in *Input → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: input.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.TitleField;
+
+  /**
+   * SubHeading field in *Input → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: input.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  subheading: prismic.RichTextField;
+
+  /**
+   * Body field in *Input → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: input.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+}
+
+/**
+ * Default variation for Input Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type InputSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<InputSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Input*
+ */
+type InputSliceVariation = InputSliceDefault;
+
+/**
+ * Input Shared Slice
+ *
+ * - **API ID**: `input`
+ * - **Description**: Input
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type InputSlice = prismic.SharedSlice<"input", InputSliceVariation>;
 
 /**
  * Primary content in *RichText → Primary*
@@ -520,6 +586,10 @@ declare module "@prismicio/client" {
       HeroSliceDefaultPrimary,
       HeroSliceVariation,
       HeroSliceDefault,
+      InputSlice,
+      InputSliceDefaultPrimary,
+      InputSliceVariation,
+      InputSliceDefault,
       RichTextSlice,
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,

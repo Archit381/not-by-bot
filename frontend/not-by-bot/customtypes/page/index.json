@@ -27,6 +27,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "input": {
+              "type": "SharedSlice"
+            },
             "showcase": {
               "type": "SharedSlice"
             },
