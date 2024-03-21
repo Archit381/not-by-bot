@@ -1,7 +1,7 @@
 {
   "id": "input",
   "type": "SharedSlice",
-  "name": "Input",
+  "name": "InputSlice",
   "description": "Input",
   "variations": [
     {

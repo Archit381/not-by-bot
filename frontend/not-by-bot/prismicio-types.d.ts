@@ -266,11 +266,11 @@ type HeroSliceVariation = HeroSliceDefault;
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
 
 /**
- * Primary content in *Input → Primary*
+ * Primary content in *InputSlice → Primary*
  */
 export interface InputSliceDefaultPrimary {
   /**
-   * Heading field in *Input → Primary*
+   * Heading field in *InputSlice → Primary*
    *
    * - **Field Type**: Title
    * - **Placeholder**: *None*
@@ -280,7 +280,7 @@ export interface InputSliceDefaultPrimary {
   heading: prismic.TitleField;
 
   /**
-   * SubHeading field in *Input → Primary*
+   * SubHeading field in *InputSlice → Primary*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
@@ -290,7 +290,7 @@ export interface InputSliceDefaultPrimary {
   subheading: prismic.RichTextField;
 
   /**
-   * Body field in *Input → Primary*
+   * Body field in *InputSlice → Primary*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
@@ -301,7 +301,7 @@ export interface InputSliceDefaultPrimary {
 }
 
 /**
- * Default variation for Input Slice
+ * Default variation for InputSlice Slice
  *
  * - **API ID**: `default`
  * - **Description**: Default
@@ -314,12 +314,12 @@ export type InputSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
- * Slice variation for *Input*
+ * Slice variation for *InputSlice*
  */
 type InputSliceVariation = InputSliceDefault;
 
 /**
- * Input Shared Slice
+ * InputSlice Shared Slice
  *
  * - **API ID**: `input`
  * - **Description**: Input
