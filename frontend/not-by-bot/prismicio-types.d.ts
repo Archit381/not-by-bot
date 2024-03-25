@@ -291,12 +291,32 @@ export interface CallToActionSliceDefaultPrimary {
   /**
    * Heading field in *CallToAction → Primary*
    *
-   * - **Field Type**: Rich Text
+   * - **Field Type**: Title
    * - **Placeholder**: *None*
    * - **API ID Path**: call_to_action.primary.heading
    * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
-  heading: prismic.RichTextField;
+  heading: prismic.TitleField;
+
+  /**
+   * Button Text field in *CallToAction → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.primary.button_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  button_text: prismic.KeyTextField;
+
+  /**
+   * Button Link field in *CallToAction → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.primary.button_link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  button_link: prismic.LinkField;
 }
 
 /**

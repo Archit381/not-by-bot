@@ -7,12 +7,24 @@
 				"__TYPE__": "StructuredTextContent",
 				"value": [
 					{
-						"type": "paragraph",
+						"type": "heading2",
 						"content": {
-							"text": "Lorem ex mollit qui labore et culpa cillum ea ea officia dolor in ipsum. Ut occaecat elit ut quis enim."
+							"text": "Official"
 						}
 					}
 				]
+			},
+			"button_text": {
+				"__TYPE__": "FieldContent",
+				"value": "gain",
+				"type": "Text"
+			},
+			"button_link": {
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "http://google.com"
+				}
 			}
 		},
 		"items": []
