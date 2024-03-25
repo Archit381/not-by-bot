@@ -18,14 +18,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={dmSans.variable}>
+    <html lang="en" className={dmSans.variable} style={{background: '#070815'}}>
       <body className="bg-[#070815] text-white">
         <Header />
-        <main>
-          {children}
-        </main>
-      </body>
+        <main>{children}</main>
         <Footer />
+      </body>
+      
       <PrismicPreview repositoryName={repositoryName} />
     </html>
   );
