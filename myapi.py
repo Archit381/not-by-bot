@@ -10,6 +10,7 @@ from nltk.tokenize.regexp import wordpunct_tokenize
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from typing import Optional
+from fastapi.middleware.cors import CORSMiddleware
 
 tokenizer=GPT2Tokenizer.from_pretrained('gpt2')
 
@@ -66,6 +67,14 @@ else:
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins, you can specify specific origins
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],  # Allows specific methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 @app.get('/get-perplexity/{text}')
 def get_perplexity(text: str):

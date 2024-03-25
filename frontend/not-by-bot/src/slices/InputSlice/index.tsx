@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Bounded from "@/app/components/Bounded";
 import { Content } from "@prismicio/client";
@@ -6,30 +6,52 @@ import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import axios from 'axios'
+import axios from "axios";
 
 export type InputSliceProps = SliceComponentProps<Content.InputSlice>;
 
-
 const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
-  const [perplexityScore,setPerplexityScore]=useState('');
-  const [burstinessScore,setBurstinessScore]=useState('');
+  const [perplexityScore, setPerplexityScore] = useState("");
+  const [burstinessScore, setBurstinessScore] = useState("");
 
-  const fetchApi=async()=>{
-    
-    const baseUrl="http://127.0.0.1:8000/get-perplexity/lmaoihatenextjssometimes"
+  const fetchApi = async (getMethod: string) => {
 
-    const response = await axios.get(baseUrl);
+    const text = 'In a small village nestled between rolling hills, there was a peculiar tree that bore fruit unlike any other. Its fruit, when eaten, granted the eater the ability to understand the language of animals. Many had tried to find the tree, but none had succeeded. One day, a young girl named Elara set out on a quest to find the tree, driven by her love for animals. She journeyed through dense forests and across vast plains, facing numerous challenges along the way. Finally, after many trials, she found the tree and tasted its fruit. From that day on, Elara became known as the villages beloved animal whisperer.';
+    const baseUrl = "http://127.0.0.1:8000";
 
-    if(response){
-      console.log(response.data)
+    try {
+      const response = await axios.get(`${baseUrl}${getMethod}${text}`);
+
+      if (response) {
+        return response.data;
+
+      }
+
+    } catch (err) {
+      console.log(err);
     }
 
-  }
+  };
 
-  const handleSubmitButton=()=>{
-    fetchApi()
-  }
+  const handleSubmitButton = async() => {
+    const getPerplexityMethod="/get-perplexity/"
+    const getBurstinessMethod="/get-burstiness/"
+
+    const perplexity=await fetchApi(getPerplexityMethod);
+    const burstiness=await fetchApi(getBurstinessMethod);
+
+    const p=(perplexity.perplexity)
+    const b=(burstiness.burstiness)
+
+    
+
+    if(p>30000 || b<0.2){
+      console.log("AI")
+    }else{
+      console.log("Human")
+    }
+
+  };
 
   return (
     <Bounded
@@ -53,7 +75,9 @@ const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
       <div className="mt-20 flex w-full px-10">
         <Input type="text" placeholder="Your Content" />
         <div className="ml-4">
-          <Button variant="outline" onClick={handleSubmitButton}>Submit</Button>
+          <Button variant="outline" onClick={handleSubmitButton}>
+            Submit
+          </Button>
         </div>
       </div>
 
