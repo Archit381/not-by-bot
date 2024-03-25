@@ -27,6 +27,12 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "integrations": {
+              "type": "SharedSlice"
+            },
+            "bento": {
+              "type": "SharedSlice"
+            },
             "input": {
               "type": "SharedSlice"
             },

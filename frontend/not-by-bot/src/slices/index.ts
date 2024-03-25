@@ -3,8 +3,10 @@
 import dynamic from "next/dynamic";
 
 export const components = {
+  bento: dynamic(() => import("./Bento")),
   hero: dynamic(() => import("./Hero")),
   input: dynamic(() => import("./InputSlice")),
+  integrations: dynamic(() => import("./Integrations")),
   rich_text: dynamic(() => import("./RichText")),
   showcase: dynamic(() => import("./Showcase")),
 };

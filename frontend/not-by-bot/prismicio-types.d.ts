@@ -5,6 +5,8 @@ import type * as prismic from "@prismicio/client";
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
 type PageDocumentDataSlicesSlice =
+  | IntegrationsSlice
+  | BentoSlice
   | InputSlice
   | ShowcaseSlice
   | HeroSlice
@@ -184,6 +186,104 @@ export type SettingsDocument<Lang extends string = string> =
 export type AllDocumentTypes = PageDocument | SettingsDocument;
 
 /**
+ * Primary content in *Bento → Primary*
+ */
+export interface BentoSliceDefaultPrimary {
+  /**
+   * Heading field in *Bento → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Italic for gold text
+   * - **API ID Path**: bento.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Body field in *Bento → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: bento.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *Bento → Items*
+ */
+export interface BentoSliceDefaultItem {
+  /**
+   * Title field in *Bento → Items*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: bento.items[].title
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  title: prismic.TitleField;
+
+  /**
+   * Body field in *Bento → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: bento.items[].body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Image field in *Bento → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: bento.items[].image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Wide field in *Bento → Items*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: bento.items[].wide
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  wide: prismic.BooleanField;
+}
+
+/**
+ * Default variation for Bento Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BentoSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<BentoSliceDefaultPrimary>,
+  Simplify<BentoSliceDefaultItem>
+>;
+
+/**
+ * Slice variation for *Bento*
+ */
+type BentoSliceVariation = BentoSliceDefault;
+
+/**
+ * Bento Shared Slice
+ *
+ * - **API ID**: `bento`
+ * - **Description**: Bento
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BentoSlice = prismic.SharedSlice<"bento", BentoSliceVariation>;
+
+/**
  * Primary content in *Hero → Primary*
  */
 export interface HeroSliceDefaultPrimary {
@@ -326,6 +426,78 @@ type InputSliceVariation = InputSliceDefault;
  * - **Documentation**: https://prismic.io/docs/slice
  */
 export type InputSlice = prismic.SharedSlice<"input", InputSliceVariation>;
+
+/**
+ * Primary content in *Integrations → Primary*
+ */
+export interface IntegrationsSliceDefaultPrimary {
+  /**
+   * Heading field in *Integrations → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: integrations.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.TitleField;
+
+  /**
+   * Body field in *Integrations → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: integrations.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *Integrations → Items*
+ */
+export interface IntegrationsSliceDefaultItem {
+  /**
+   * Icon field in *Integrations → Items*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: integrations.items[].icon
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  icon: prismic.SelectField<
+    "cloudfare" | "npm" | "github" | "figma" | "digitalocean" | "fly"
+  >;
+}
+
+/**
+ * Default variation for Integrations Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type IntegrationsSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<IntegrationsSliceDefaultPrimary>,
+  Simplify<IntegrationsSliceDefaultItem>
+>;
+
+/**
+ * Slice variation for *Integrations*
+ */
+type IntegrationsSliceVariation = IntegrationsSliceDefault;
+
+/**
+ * Integrations Shared Slice
+ *
+ * - **API ID**: `integrations`
+ * - **Description**: Integrations
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type IntegrationsSlice = prismic.SharedSlice<
+  "integrations",
+  IntegrationsSliceVariation
+>;
 
 /**
  * Primary content in *RichText → Primary*
@@ -582,6 +754,11 @@ declare module "@prismicio/client" {
       SettingsDocumentData,
       SettingsDocumentDataNavigationItem,
       AllDocumentTypes,
+      BentoSlice,
+      BentoSliceDefaultPrimary,
+      BentoSliceDefaultItem,
+      BentoSliceVariation,
+      BentoSliceDefault,
       HeroSlice,
       HeroSliceDefaultPrimary,
       HeroSliceVariation,
@@ -590,6 +767,11 @@ declare module "@prismicio/client" {
       InputSliceDefaultPrimary,
       InputSliceVariation,
       InputSliceDefault,
+      IntegrationsSlice,
+      IntegrationsSliceDefaultPrimary,
+      IntegrationsSliceDefaultItem,
+      IntegrationsSliceVariation,
+      IntegrationsSliceDefault,
       RichTextSlice,
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,
