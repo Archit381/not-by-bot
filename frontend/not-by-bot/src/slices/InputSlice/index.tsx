@@ -8,21 +8,16 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import axios from 'axios'
 
-/**
- * Props for `Input`.
- */
 export type InputSliceProps = SliceComponentProps<Content.InputSlice>;
 
-/**
- * Component for "Input" Slices.
- */
+
 const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
   const [perplexityScore,setPerplexityScore]=useState('');
   const [burstinessScore,setBurstinessScore]=useState('');
 
   const fetchApi=async()=>{
     
-    const baseUrl="https://8abd-34-106-64-81.ngrok-free.app/get-perplexity/randomfuckingtext"
+    const baseUrl="http://127.0.0.1:8000/get-perplexity/lmaoihatenextjssometimes"
 
     const response = await axios.get(baseUrl);
 
@@ -30,6 +25,10 @@ const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
       console.log(response.data)
     }
 
+  }
+
+  const handleSubmitButton=()=>{
+    fetchApi()
   }
 
   return (
@@ -54,7 +53,7 @@ const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
       <div className="mt-20 flex w-full px-10">
         <Input type="text" placeholder="Your Content" />
         <div className="ml-4">
-          <Button variant="outline" >Submit</Button>
+          <Button variant="outline" onClick={handleSubmitButton}>Submit</Button>
         </div>
       </div>
 
