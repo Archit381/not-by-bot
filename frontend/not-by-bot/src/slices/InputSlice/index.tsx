@@ -3,8 +3,7 @@
 import Bounded from "@/app/components/Bounded";
 import { Content } from "@prismicio/client";
 import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button, Input, Spinner } from "@nextui-org/react";
 import { useState } from "react";
 import axios from "axios";
 
@@ -13,10 +12,12 @@ export type InputSliceProps = SliceComponentProps<Content.InputSlice>;
 const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
   const [perplexityScore, setPerplexityScore] = useState("");
   const [burstinessScore, setBurstinessScore] = useState("");
+  const [userInput, setUserInput] = useState("");
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const fetchApi = async (getMethod: string) => {
-
-    const text = 'In a small village nestled between rolling hills, there was a peculiar tree that bore fruit unlike any other. Its fruit, when eaten, granted the eater the ability to understand the language of animals. Many had tried to find the tree, but none had succeeded. One day, a young girl named Elara set out on a quest to find the tree, driven by her love for animals. She journeyed through dense forests and across vast plains, facing numerous challenges along the way. Finally, after many trials, she found the tree and tasted its fruit. From that day on, Elara became known as the villages beloved animal whisperer.';
+    const text = userInput;
     const baseUrl = "http://127.0.0.1:8000";
 
     try {
@@ -24,33 +25,34 @@ const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
 
       if (response) {
         return response.data;
-
       }
-
     } catch (err) {
       console.log(err);
     }
-
   };
 
-  const handleSubmitButton = async() => {
-    const getPerplexityMethod="/get-perplexity/"
-    const getBurstinessMethod="/get-burstiness/"
+  const handleSubmitButton = async () => {
+    setResult("generating result")
 
-    const perplexity=await fetchApi(getPerplexityMethod);
-    const burstiness=await fetchApi(getBurstinessMethod);
+    setLoading(true)
+    const getPerplexityMethod = "/get-perplexity/";
+    const getBurstinessMethod = "/get-burstiness/";
 
-    const p=(perplexity.perplexity)
-    const b=(burstiness.burstiness)
+    const perplexity = await fetchApi(getPerplexityMethod);
+    const burstiness = await fetchApi(getBurstinessMethod);
 
-    
+    const p = perplexity.perplexity;
+    setPerplexityScore(p)
+    const b = burstiness.burstiness;
+    setBurstinessScore(b)
 
-    if(p>30000 || b<0.2){
-      console.log("AI")
-    }else{
-      console.log("Human")
+    if (p > 30000 && b < 0.2) {
+      setResult("AI Generated Content");
+    } else {
+      setResult("Human Generated Content");
     }
 
+    setLoading(false);
   };
 
   return (
@@ -72,19 +74,38 @@ const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
         <PrismicRichText field={slice.primary.body} />
       </div>
 
-      <div className="mt-20 flex w-full px-10">
-        <Input type="text" placeholder="Your Content" />
+      <div className="mt-20 flex w-full items-center px-10">
+        <Input
+          type="text"
+          label="Your Text"
+          size="sm"
+          onValueChange={setUserInput}
+        />
         <div className="ml-4">
-          <Button variant="outline" onClick={handleSubmitButton}>
-            Submit
+          <Button
+            color="warning"
+            variant="ghost"
+            size="md"
+            onPress={handleSubmitButton}
+          >
+            Scan
           </Button>
         </div>
       </div>
 
-      {/* <div className="mt-10 flex">
-        <h5>Your Results: AI Generated Content</h5>
-        
-      </div> */}
+      {result ? (
+        <>
+          {loading ? (
+            <div className="mt-10">
+              <Spinner color="warning" />
+            </div>
+          ) : (
+            <div className="mt-10 flex-col items-center">
+              <h5>Text Analysis Result: {result}</h5>
+            </div>
+          )}
+        </>
+      ) : null}
     </Bounded>
   );
 };

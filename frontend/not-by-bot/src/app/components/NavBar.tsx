@@ -5,6 +5,7 @@ import WordMark from "./WordMark";
 import { PrismicNextLink } from "@prismicio/next";
 import Link from "next/link";
 import ButtonLink from "./ButtonLink";
+import { Button } from "@nextui-org/react";
 
 type NavBarProps = {
   settings: Content.SettingsDocument;
@@ -22,9 +23,7 @@ export default function NavBar({ settings }: NavBarProps) {
             if (item.cta_button) {
               return (
                 <li key={item.label}>
-                  <ButtonLink field={item.link}>
-                    {item.label}
-                  </ButtonLink>
+                  <ButtonLink field={item.link}>{item.label}</ButtonLink>
                 </li>
               );
             }
@@ -40,6 +39,13 @@ export default function NavBar({ settings }: NavBarProps) {
               </li>
             );
           })}
+          <div>
+            <Link href='/authorizeUser'>
+              <Button variant="ghost" color="warning" radius="full">
+                Sign Up
+              </Button>
+            </Link>
+          </div>
         </ul>
       </div>
     </nav>
