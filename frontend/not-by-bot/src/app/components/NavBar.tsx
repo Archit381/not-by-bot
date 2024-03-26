@@ -40,8 +40,14 @@ export default function NavBar({ settings }: NavBarProps) {
             );
           })}
           <div>
-            <Link href='/authorizeUser'>
-              <Button variant="ghost" color="warning" radius="full">
+            <Link href="/loginUser">
+              <Button variant="light" color="warning" >
+                Login
+              </Button>
+            </Link>
+
+            <Link href="/authorizeUser">
+              <Button variant="ghost" color="warning" radius="full" style={{marginLeft: 10}}>
                 Sign Up
               </Button>
             </Link>
