@@ -4,8 +4,6 @@ import PlainLogo from "./PlainLogo";
 import Bounded from "@/app/components/Bounded";
 import ButtonLink from "@/app/components/ButtonLink";
 
-
-
 export type CallToActionProps = SliceComponentProps<Content.CallToActionSlice>;
 
 
@@ -17,7 +15,6 @@ const CallToAction = ({ slice }: CallToActionProps): JSX.Element => {
       className="relative py-32 text-center font-medium md:py-40"
     >
       <div className="glow absolute -z-10 aspect-square w-full max-w-sm rounded-full bg-blue-500/50 blur-[160px] filter" />
-
       <div className="glass-container rounded-lg bg-gradient-to-b from-slate-800 to-slate-900 p-4 md:rounded-xl">
         <PlainLogo />
       </div>
