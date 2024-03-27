@@ -46,7 +46,8 @@ const login = () => {
 
       if (data) {
         console.log(data);
-        router.push("/marketplace");
+        // router.push("/marketplace");
+        window.location.href = "http://localhost:3000/marketplace"
       }
     } catch (err) {
       console.log(err);

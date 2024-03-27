@@ -99,7 +99,8 @@ const signUp = () => {
         console.log(error);
         alert("There was an eror please try again");
       }else{
-        router.push("/marketplace");
+        // router.push("/marketplace");
+        window.location.href = "http://localhost:3000/marketplace"
       }
 
     } catch (err) {
