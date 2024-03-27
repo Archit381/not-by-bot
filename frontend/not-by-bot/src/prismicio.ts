@@ -21,6 +21,10 @@ const routes: prismic.ClientConfig["routes"] = [
     uid: "home",
     path: "/",
   },
+  {
+    type: "marketplace",
+    path: "/browse-genre/:uid",
+  },
 ];
 
 /**

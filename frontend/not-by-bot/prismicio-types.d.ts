@@ -4,7 +4,95 @@ import type * as prismic from "@prismicio/client";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
+type MarketplaceDocumentDataSlicesSlice = RichTextSlice | MarketplaceHeroSlice;
+
+/**
+ * Content for Marketplace documents
+ */
+interface MarketplaceDocumentData {
+  /**
+   * Heading field in *Marketplace*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketplace.heading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.TitleField;
+
+  /**
+   * SubHeading field in *Marketplace*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketplace.subheading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  subheading: prismic.RichTextField;
+
+  /**
+   * Slice Zone field in *Marketplace*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketplace.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<MarketplaceDocumentDataSlicesSlice> /**
+   * Meta Description field in *Marketplace*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: marketplace.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *Marketplace*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketplace.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+
+  /**
+   * Meta Title field in *Marketplace*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: marketplace.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_title: prismic.KeyTextField;
+}
+
+/**
+ * Marketplace document from Prismic
+ *
+ * - **API ID**: `marketplace`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type MarketplaceDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<MarketplaceDocumentData>,
+    "marketplace",
+    Lang
+  >;
+
 type PageDocumentDataSlicesSlice =
+  | MarketplaceHeroSlice
   | CallToActionSlice
   | IntegrationsSlice
   | BentoSlice
@@ -184,7 +272,10 @@ export type SettingsDocument<Lang extends string = string> =
     Lang
   >;
 
-export type AllDocumentTypes = PageDocument | SettingsDocument;
+export type AllDocumentTypes =
+  | MarketplaceDocument
+  | PageDocument
+  | SettingsDocument;
 
 /**
  * Primary content in *Bento → Primary*
@@ -566,6 +657,86 @@ export type IntegrationsSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *MarketplaceHero → Primary*
+ */
+export interface MarketplaceHeroSliceDefaultPrimary {
+  /**
+   * Heading field in *MarketplaceHero → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketplace_hero.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Body field in *MarketplaceHero → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketplace_hero.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *MarketplaceHero → Items*
+ */
+export interface MarketplaceHeroSliceDefaultItem {
+  /**
+   * GenreTitle field in *MarketplaceHero → Items*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketplace_hero.items[].genretitle
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  genretitle: prismic.TitleField;
+
+  /**
+   * Genre field in *MarketplaceHero → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketplace_hero.items[].genre
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  genre: prismic.ContentRelationshipField;
+}
+
+/**
+ * Default variation for MarketplaceHero Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type MarketplaceHeroSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<MarketplaceHeroSliceDefaultPrimary>,
+  Simplify<MarketplaceHeroSliceDefaultItem>
+>;
+
+/**
+ * Slice variation for *MarketplaceHero*
+ */
+type MarketplaceHeroSliceVariation = MarketplaceHeroSliceDefault;
+
+/**
+ * MarketplaceHero Shared Slice
+ *
+ * - **API ID**: `marketplace_hero`
+ * - **Description**: MarketplaceHero
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type MarketplaceHeroSlice = prismic.SharedSlice<
+  "marketplace_hero",
+  MarketplaceHeroSliceVariation
+>;
+
+/**
  * Primary content in *RichText → Primary*
  */
 export interface RichTextSliceDefaultPrimary {
@@ -813,6 +984,9 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
+      MarketplaceDocument,
+      MarketplaceDocumentData,
+      MarketplaceDocumentDataSlicesSlice,
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
@@ -842,6 +1016,11 @@ declare module "@prismicio/client" {
       IntegrationsSliceDefaultItem,
       IntegrationsSliceVariation,
       IntegrationsSliceDefault,
+      MarketplaceHeroSlice,
+      MarketplaceHeroSliceDefaultPrimary,
+      MarketplaceHeroSliceDefaultItem,
+      MarketplaceHeroSliceVariation,
+      MarketplaceHeroSliceDefault,
       RichTextSlice,
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,

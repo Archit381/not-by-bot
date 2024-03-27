@@ -46,7 +46,7 @@ const Bento = ({ slice }: BentoProps): JSX.Element => {
         {slice.items.map((item) => (
           <div
             className={clsx(
-              "glass-container row-span-3 grid grid-rows-subgrid gap-4 rounded-lg bg-gradient-to-b from-gray-900 to-gray-950 p-4",
+              "glass-container row-span-3 grid grid-rows-subgrid gap-4 rounded-lg bg-gradient-to-b from-gray-900 to-gray-950 p-4 hover:",
               item.wide ? "md:col-span-2" : "md:col-span-1",
             )}
             key={asText(item.title)}

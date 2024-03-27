@@ -8,6 +8,7 @@ export const components = {
   hero: dynamic(() => import("./Hero")),
   input: dynamic(() => import("./InputSlice")),
   integrations: dynamic(() => import("./Integrations")),
+  marketplace_hero: dynamic(() => import("./MarketplaceHero")),
   rich_text: dynamic(() => import("./RichText")),
   showcase: dynamic(() => import("./Showcase")),
 };
