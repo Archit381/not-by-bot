@@ -30,6 +30,15 @@
           "multi": "paragraph,strong,em"
         }
       },
+      "genre": {
+        "type": "StructuredText",
+        "config": {
+          "label": "genre",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em"
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",

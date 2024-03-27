@@ -36,7 +36,7 @@ const accountLogo = () => {
 
   return (
     <div>
-      <Dropdown>
+      <Dropdown backdrop="blur">
         <DropdownTrigger>
           <Avatar
             isBordered

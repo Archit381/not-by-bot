@@ -18,6 +18,7 @@ import {
 import supabase from "../../../supabase";
 import { useEffect, useState } from "react";
 
+
 export type MarketplaceHeroProps =
   SliceComponentProps<Content.MarketplaceHeroSlice>;
 
@@ -194,7 +195,7 @@ const MarketplaceHero = async ({
                   alignItems: "center",
                   justifyContent: "center",
                   display: "flex",
-                  marginLeft: 50,
+                  marginLeft: 30,
                 }}
               >
                 <div

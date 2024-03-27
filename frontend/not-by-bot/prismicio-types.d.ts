@@ -33,6 +33,17 @@ interface MarketplaceDocumentData {
   subheading: prismic.RichTextField;
 
   /**
+   * genre field in *Marketplace*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketplace.genre
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  genre: prismic.RichTextField;
+
+  /**
    * Slice Zone field in *Marketplace*
    *
    * - **Field Type**: Slice Zone
