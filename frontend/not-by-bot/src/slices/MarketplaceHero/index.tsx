@@ -12,10 +12,11 @@ import {
   Image,
   Button,
   CardHeader,
+  Avatar,
+  AvatarGroup,
 } from "@nextui-org/react";
 import supabase from "../../../supabase";
 import { useEffect, useState } from "react";
-import Cards from "@/app/components/cards";
 
 export type MarketplaceHeroProps =
   SliceComponentProps<Content.MarketplaceHeroSlice>;
@@ -33,7 +34,7 @@ const MarketplaceHero = async ({
   slice,
 }: MarketplaceHeroProps): Promise<JSX.Element> => {
   const client = createClient();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [genres, setGenres] = useState<Content.MarketplaceDocument[]>([]);
   const [data, setData] = useState<Item[]>([]);
 
@@ -58,6 +59,7 @@ const MarketplaceHero = async ({
     };
 
     const fetchData = async () => {
+      setLoading(true);
       try {
         let { data: all_content, error } = await supabase
           .from("all_content")
@@ -65,6 +67,7 @@ const MarketplaceHero = async ({
 
         if (all_content) {
           setData(all_content);
+          setLoading(false);
         }
       } catch (error) {
         console.log(error);
@@ -72,6 +75,7 @@ const MarketplaceHero = async ({
     };
 
     fetchGenres();
+
     fetchData();
   }, []);
 
@@ -102,58 +106,186 @@ const MarketplaceHero = async ({
           <PrismicRichText field={slice.primary.body} />
         </div>
       </Bounded>
+
       <div className="mx-auto flex max-w-6xl flex-col justify-between py-2 font-medium text-white md:items-center">
-        <div className="mt-2 grid max-w-7xl grid-rows-[auto_auto_auto] items-center justify-center gap-8 self-center md:grid-cols-6 md:gap-10">
-          {genres.map(
-            (genre, index) =>
-              genre && (
-                <div key={genre.id}>
-                  <PrismicNextLink document={genre}>
-                    <div className="flex items-center justify-center rounded-xl border border-blue-50/20 bg-gradient-to-b from-slate-50/15 to-slate-50/5 p-7 px-9 backdrop-blur-sm hover:border-yellow-300 hover:text-yellow-300">
-                      <PrismicRichText field={genre.data.heading} />
-                    </div>
-                  </PrismicNextLink>
+        <div className="flex">
+          <div>
+            <div
+              style={{ alignSelf: "flex-start", maxWidth: 300, marginLeft: 20 }}
+            >
+              Get your content authenticated with us today and unlock
+              opportunities with potential employers!
+            </div>
+
+            <div
+              style={{
+                alignSelf: "flex-start",
+                maxWidth: 300,
+                marginLeft: 10,
+                marginTop: 100,
+              }}
+            >
+              <AvatarGroup
+                // isBordered
+                max={3}
+                total={5300}
+                renderCount={(count) => (
+                  <p className="ms-2 text-small font-medium text-white">
+                    +{count} have joined us !
+                  </p>
+                )}
+              >
+                <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
+                <Avatar src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
+                <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
+                <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" />
+                <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026702d" />
+                <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
+              </AvatarGroup>
+            </div>
+          </div>
+
+          <div>
+            <div className="mb-10 rounded-l-full rounded-r-full bg-gradient-to-b from-yellow-500 to-yellow-200 p-10 px-32">
+              <Image src="/assets/bg4.png" width={200} height={200} />
+            </div>
+          </div>
+
+          <div className="mt-20">
+            <div
+              style={{
+                alignSelf: "flex-end",
+                maxWidth: 300,
+                marginLeft: 20,
+                flexDirection: "row",
+                display: "flex",
+              }}
+            >
+              <div
+                style={{
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 40,
+                    fontFamily: "cursive",
+                    fontWeight: "bold",
+                  }}
+                >
+                  5K+
                 </div>
-              ),
-          )}
+                <div
+                  style={{
+                    fontSize: 20,
+                    fontFamily: "cursive",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Creators
+                </div>
+              </div>
+              <div
+                style={{
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  marginLeft: 50,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 40,
+                    fontFamily: "cursive",
+                    fontWeight: "bold",
+                  }}
+                >
+                  1K+
+                </div>
+                <div
+                  style={{
+                    fontSize: 20,
+                    fontFamily: "cursive",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Verified Content
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div
-          style={{
-            alignSelf: "flex-start",
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-          }}
-        >
-          <h3 style={{ fontSize: 25, width: "100%",marginBottom: 30 }}>
-            Unlock a world of captivating stories handpicked just for you!
-          </h3>
-          {data.map((item: Item) => {
-            return (
-              <div
-                key={item.content_id}
-                style={{ flex: "0 0 auto", margin: 8}}
-              >
-                <Card className="py-4 bg-gradient-to-b from-gray-900 to-gray-950">
-                  <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
-                    <p className="text-tiny font-bold uppercase text-white">{item.content_genre}</p>
-                    <small className="text-default-500">{item.content_likes} Likes</small>
-                    <h4 className="text-large font-bold text-white">{item.content_name}</h4>
-                  </CardHeader>
-                  <CardBody className="overflow-visible py-2">
-                    <Image
-                      alt="Card background"
-                      className="rounded-xl object-cover"
-                      src="https://source.unsplash.com/random?wallpapers"
-                      width={190}
-                    />
-                  </CardBody>
-                </Card>
-              </div>
-            );
-          })}
-        </div>
+        {loading ? (
+          <Spinner color="warning"/>
+        ) : (
+          <>
+
+            <div
+              className="grid max-w-7xl grid-rows-[auto_auto_auto] items-center justify-center gap-8 self-center md:grid-cols-6 md:gap-10"
+              style={{ marginTop: 25 }}
+            >
+              {genres.map(
+                (genre, index) =>
+                  genre && (
+                    <div key={genre.id}>
+                      <PrismicNextLink document={genre}>
+                        <div className="flex items-center justify-center rounded-xl border border-blue-50/20 bg-gradient-to-b from-slate-50/15 to-slate-50/5 p-7 px-9 backdrop-blur-sm hover:scale-110 hover:text-yellow-300">
+                          <PrismicRichText field={genre.data.heading} />
+                        </div>
+                      </PrismicNextLink>
+                    </div>
+                  ),
+              )}
+            </div>
+            <div
+              style={{
+                alignSelf: "flex-start",
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+              }}
+            >
+              <h3 style={{ fontSize: 25, width: "100%", marginBottom: 30 }}>
+                Unlock a world of captivating stories handpicked just for you!
+              </h3>
+              {data.map((item: Item) => {
+                return (
+                  <div
+                    key={item.content_id}
+                    style={{ flex: "0 0 auto", margin: 8 }}
+                  >
+                    <Card className="bg-gradient-to-b from-gray-900 to-gray-950 py-4">
+                      <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
+                        <p className="text-tiny font-bold uppercase text-white">
+                          {item.content_genre}
+                        </p>
+                        <small className="text-default-500">
+                          {item.content_likes} Likes
+                        </small>
+                        <h4 className="text-large font-bold text-white">
+                          {item.content_name}
+                        </h4>
+                      </CardHeader>
+                      <CardBody className="overflow-visible py-2">
+                        <Image
+                          alt="Card background"
+                          className="rounded-xl object-cover"
+                          src="https://source.unsplash.com/random?wallpapers"
+                          width={190}
+                        />
+                      </CardBody>
+                    </Card>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

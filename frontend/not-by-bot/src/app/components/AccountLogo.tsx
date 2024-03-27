@@ -40,7 +40,7 @@ const accountLogo = () => {
         <DropdownTrigger>
           <Avatar
             isBordered
-            color="warning"
+            // color="warning"
             // style={{background: 'black'}}
             src="https://i.pravatar.cc/150?u=a04258114e29026702d"
           />
