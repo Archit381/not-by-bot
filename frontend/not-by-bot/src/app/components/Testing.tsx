@@ -63,6 +63,7 @@ const Testing: React.FC<TestingProps> = ({ data }) => {
   const handleSearch = () => {
     console.log(searchText);
     console.log(filter);
+    setLoading(true);
 
     let data: Item[] = [];
     if (filter === "title") {
@@ -74,19 +75,21 @@ const Testing: React.FC<TestingProps> = ({ data }) => {
         }
       });
       setMappingData(data);
-      console.log(data);
+      setLoading(false);
     }
 
     if (filter === "author") {
       fetchedData.map((item) => {
         if (
-          item?.content_owner_name.toLowerCase().includes(searchText.toLowerCase())
+          item?.content_owner_name
+            .toLowerCase()
+            .includes(searchText.toLowerCase())
         ) {
           data.push(item);
         }
       });
       setMappingData(data);
-      console.log(data);
+      setLoading(false);
     }
   };
 
