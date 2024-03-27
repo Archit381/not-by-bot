@@ -17,7 +17,7 @@ import {
 } from "@nextui-org/react";
 import supabase from "../../../supabase";
 import { useEffect, useState } from "react";
-
+import { FaRegHeart } from "react-icons/fa";
 
 export type MarketplaceHeroProps =
   SliceComponentProps<Content.MarketplaceHeroSlice>;
@@ -222,10 +222,9 @@ const MarketplaceHero = async ({
         </div>
 
         {loading ? (
-          <Spinner color="warning"/>
+          <Spinner color="warning" />
         ) : (
           <>
-
             <div
               className="grid max-w-7xl grid-rows-[auto_auto_auto] items-center justify-center gap-8 self-center md:grid-cols-6 md:gap-10"
               style={{ marginTop: 25 }}
@@ -260,17 +259,45 @@ const MarketplaceHero = async ({
                     key={item.content_id}
                     style={{ flex: "0 0 auto", margin: 8 }}
                   >
-                    <Card className="bg-gradient-to-b from-gray-900 to-gray-950 py-4">
+                    <div className="rounded-md mb-2">
+                      <div>
+                        <Image
+                          alt="Card background"
+                          className="rounded-xl object-cover"
+                          src="https://source.unsplash.com/random?wallpapers"
+                          width={265}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <div className="mx-2 flex items-center justify-between">
+                        <h4 className="font-bold text-white text-lg">
+                          {item.content_name}
+                        </h4>
+                        <small className="flex items-center ">
+                          <FaRegHeart className="mr-1" />
+                          {item.content_likes}
+                        </small>
+                      </div>
+
+                      <p className="text-tiny font-bold uppercase text-default-500 ml-2">
+                        {item.content_genre}
+                      </p>
+                    </div>
+                    {/* <Card className="bg-gradient-to-b from-gray-900 to-gray-950 py-4">
                       <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
                         <p className="text-tiny font-bold uppercase text-white">
                           {item.content_genre}
                         </p>
                         <small className="text-default-500">
-                          {item.content_likes} Likes
+                          {item.content_likes} Like
                         </small>
-                        <h4 className="text-large font-bold text-white">
-                          {item.content_name}
-                        </h4>
+ 
                       </CardHeader>
                       <CardBody className="overflow-visible py-2">
                         <Image
@@ -280,7 +307,7 @@ const MarketplaceHero = async ({
                           width={190}
                         />
                       </CardBody>
-                    </Card>
+                    </Card> */}
                   </div>
                 );
               })}

@@ -9,23 +9,37 @@ import {
   DropdownMenu,
   DropdownSection,
   DropdownItem,
+  Image,
+  Spinner,
 } from "@nextui-org/react";
 import supabase from "../../../supabase";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaRegHeart } from "react-icons/fa";
 
 type TestingProps = {
-  data: string; // Assuming genre_text is a string
+  data: string;
 };
+
+interface Item {
+  content_id: string;
+  content_genre: string;
+  content_name: string;
+  content_img: string;
+  content_likes: number;
+  content_owner_id: string;
+}
 
 const Testing: React.FC<TestingProps> = ({ data }) => {
   const [like, setLiked] = useState(0);
   const [searchText, setSearchText] = useState("");
-  const [fetchedData, setFetchedData] = useState([null]);
+  const [fetchedData, setFetchedData] = useState<Item[]>([]);
+  const [mappingData, setMappingData] = useState<Item[]>([]);
   const [filter, setFilter] = useState("title");
-  const [totalResults, setTotalResults]=useState(0);
+  const [totalResults, setTotalResults] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const { data: all_content, error } = await supabase
           .from("all_content")
@@ -34,7 +48,9 @@ const Testing: React.FC<TestingProps> = ({ data }) => {
 
         if (all_content) {
           setFetchedData(all_content);
-          setTotalResults(all_content.length)
+          setMappingData(all_content);
+          setTotalResults(all_content.length);
+          setLoading(false);
         }
       } catch (err) {
         console.log(err);
@@ -44,9 +60,35 @@ const Testing: React.FC<TestingProps> = ({ data }) => {
     fetchData();
   }, []);
 
-  //   useEffect(() => {
-  //     console.log("filter changed");
-  //   }, [filter]);
+  const handleSearch = () => {
+    console.log(searchText);
+    console.log(filter);
+
+    let data: Item[] = [];
+    if (filter === "title") {
+      fetchedData.map((item) => {
+        if (
+          item?.content_name.toLowerCase().includes(searchText.toLowerCase())
+        ) {
+          data.push(item);
+        }
+      });
+      setMappingData(data);
+      console.log(data);
+    }
+
+    if (filter === "author") {
+      fetchedData.map((item) => {
+        if (
+          item?.content_owner_name.toLowerCase().includes(searchText.toLowerCase())
+        ) {
+          data.push(item);
+        }
+      });
+      setMappingData(data);
+      console.log(data);
+    }
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -61,9 +103,9 @@ const Testing: React.FC<TestingProps> = ({ data }) => {
         />
 
         <div className="ml-2">
-          <Dropdown >
+          <Dropdown>
             <DropdownTrigger>
-              <Button variant="solid" color="default" size="lg">
+              <Button variant="light" color="warning" size="lg">
                 Filter
               </Button>
             </DropdownTrigger>
@@ -77,28 +119,88 @@ const Testing: React.FC<TestingProps> = ({ data }) => {
               <DropdownItem key="author" className="text-black">
                 Search By Author
               </DropdownItem>
-              <DropdownItem key="likes" className="text-black">
+              {/* <DropdownItem key="likes" className="text-black">
                 Sort By Likes
-              </DropdownItem>
+              </DropdownItem> */}
             </DropdownMenu>
           </Dropdown>
         </div>
 
         <div className="ml-2">
-          <Button variant="light" color="warning" size="lg">
+          <Button
+            variant="ghost"
+            color="warning"
+            size="lg"
+            onPress={handleSearch}
+          >
             Search
           </Button>
         </div>
       </div>
 
-      <div style={{display: 'flex', alignItems: 'center', marginTop: 10}}>
-        <FaEye color="#edbc1b"/>
+      <div style={{ display: "flex", alignItems: "center", marginTop: 10 }}>
+        <FaEye color="#edbc1b" />
         <p className="ml-2">Searching by {filter}</p>
       </div>
 
-      <p style={{fontSize: 25, fontFamily: 'cursive', marginTop: 50}}>Found {totalResults} Results</p>
+      <p style={{ fontSize: 25, fontFamily: "cursive", marginTop: 50 }}>
+        Found {mappingData.length} Results
+      </p>
 
-        
+      {loading ? (
+        <Spinner color="warning" />
+      ) : (
+        <div
+          style={{
+            alignSelf: "flex-start",
+            display: "flex",
+            //   flex:1,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            marginTop: 10,
+          }}
+        >
+          {mappingData.map((item) => {
+            return (
+              <div
+                key={item?.content_id}
+                style={{ flex: "0 0 auto", margin: 8 }}
+              >
+                <div className="mb-2 rounded-md">
+                  <div>
+                    <Image
+                      alt="Card background"
+                      className="rounded-xl object-cover"
+                      src="https://source.unsplash.com/random?wallpapers"
+                      width={265}
+                    />
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div className="mx-2 flex items-center justify-between">
+                    <h4 className="text-lg font-bold text-white">
+                      {item?.content_name}
+                    </h4>
+                    <small className="flex items-center ">
+                      <FaRegHeart className="mr-1" />
+                      {item?.content_likes}
+                    </small>
+                  </div>
+
+                  <p className="ml-2 text-tiny font-bold uppercase text-default-500">
+                    {item?.content_genre}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
