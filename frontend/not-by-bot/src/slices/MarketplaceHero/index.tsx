@@ -14,6 +14,7 @@ import {
   CardHeader,
   Avatar,
   AvatarGroup,
+  Link,
 } from "@nextui-org/react";
 import supabase from "../../../supabase";
 import { useEffect, useState } from "react";
@@ -27,7 +28,7 @@ interface Item {
   content_genre: string;
   content_name: string;
   content_img: string;
-  content_likes: number;
+  content_likes: string[];
   content_owner_id: string;
 }
 
@@ -38,6 +39,7 @@ const MarketplaceHero = async ({
   const [loading, setLoading] = useState(true);
   const [genres, setGenres] = useState<Content.MarketplaceDocument[]>([]);
   const [data, setData] = useState<Item[]>([]);
+  const [likes, setLikes] =useState([]);
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -255,6 +257,7 @@ const MarketplaceHero = async ({
               </h3>
               {data.map((item: Item) => {
                 return (
+                  <Link href={`/viewPost?id=${item?.content_id}`}>
                   <div
                     key={item.content_id}
                     style={{ flex: "0 0 auto", margin: 8 }}
@@ -280,8 +283,8 @@ const MarketplaceHero = async ({
                           {item.content_name}
                         </h4>
                         <small className="flex items-center ">
-                          <FaRegHeart className="mr-1" />
-                          {item.content_likes}
+                          <FaRegHeart className="mr-1" color="white " />
+                          <p className="text-white">{Array.isArray(item.content_likes) ? item.content_likes.length : 10}</p>
                         </small>
                       </div>
 
@@ -289,26 +292,8 @@ const MarketplaceHero = async ({
                         {item.content_genre}
                       </p>
                     </div>
-                    {/* <Card className="bg-gradient-to-b from-gray-900 to-gray-950 py-4">
-                      <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
-                        <p className="text-tiny font-bold uppercase text-white">
-                          {item.content_genre}
-                        </p>
-                        <small className="text-default-500">
-                          {item.content_likes} Like
-                        </small>
- 
-                      </CardHeader>
-                      <CardBody className="overflow-visible py-2">
-                        <Image
-                          alt="Card background"
-                          className="rounded-xl object-cover"
-                          src="https://source.unsplash.com/random?wallpapers"
-                          width={190}
-                        />
-                      </CardBody>
-                    </Card> */}
                   </div>
+                  </Link>
                 );
               })}
             </div>

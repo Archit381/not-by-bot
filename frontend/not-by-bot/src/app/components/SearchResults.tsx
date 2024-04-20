@@ -14,6 +14,7 @@ import {
 } from "@nextui-org/react";
 import supabase from "../../../supabase";
 import { FaEye, FaRegHeart } from "react-icons/fa";
+import Link from "next/link";
 
 type SearchResultsProps = {
   data: string;
@@ -165,6 +166,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ data }) => {
         >
           {mappingData.map((item) => {
             return (
+              <Link href={`/viewPost?id=${item?.content_id}`}>
               <div
                 key={item?.content_id}
                 style={{ flex: "0 0 auto", margin: 8 }}
@@ -200,6 +202,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ data }) => {
                   </p>
                 </div>
               </div>
+              </Link>
             );
           })}
         </div>
