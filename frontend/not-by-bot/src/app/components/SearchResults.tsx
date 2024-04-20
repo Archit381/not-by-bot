@@ -15,7 +15,7 @@ import {
 import supabase from "../../../supabase";
 import { FaEye, FaRegHeart } from "react-icons/fa";
 
-type TestingProps = {
+type SearchResultsProps = {
   data: string;
 };
 
@@ -28,7 +28,7 @@ interface Item {
   content_owner_id: string;
 }
 
-const Testing: React.FC<TestingProps> = ({ data }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({ data }) => {
   const [like, setLiked] = useState(0);
   const [searchText, setSearchText] = useState("");
   const [fetchedData, setFetchedData] = useState<Item[]>([]);
@@ -208,4 +208,4 @@ const Testing: React.FC<TestingProps> = ({ data }) => {
   );
 };
 
-export default Testing;
+export default SearchResults;

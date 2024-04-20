@@ -7,7 +7,7 @@ import { components } from "@/slices";
 import Bounded from "@/app/components/Bounded";
 import supabase from "../../../../supabase";
 import { Divider,Input } from "@nextui-org/react";
-import Testing from "@/app/components/testing";
+import SearchResults from "@/app/components/SearchResults";
 
 
 type Params = { uid: string };
@@ -44,7 +44,7 @@ export default async function Page({ params }: { params: Params }) {
 
         <div className="mt-6">
           
-          <Testing data={genre_text}/>
+          <SearchResults data={genre_text}/>
         </div>
       </div>
 

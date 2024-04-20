@@ -10,8 +10,6 @@ import axios from "axios";
 export type InputSliceProps = SliceComponentProps<Content.InputSlice>;
 
 const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
-  const [perplexityScore, setPerplexityScore] = useState("");
-  const [burstinessScore, setBurstinessScore] = useState("");
   const [userInput, setUserInput] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,22 +33,12 @@ const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
     setResult("generating result")
 
     setLoading(true)
-    const getPerplexityMethod = "/get-perplexity/";
-    const getBurstinessMethod = "/get-burstiness/";
+    const predictRoute = "/predict/";
 
-    const perplexity = await fetchApi(getPerplexityMethod);
-    const burstiness = await fetchApi(getBurstinessMethod);
+    const prediction = await fetchApi(predictRoute);
 
-    const p = perplexity.perplexity;
-    setPerplexityScore(p)
-    const b = burstiness.burstiness;
-    setBurstinessScore(b)
-
-    if (p > 30000 && b < 0.2) {
-      setResult("AI Generated Content");
-    } else {
-      setResult("Human Generated Content");
-    }
+    let predicted_value=(parseFloat(prediction.Result[0][0])*100).toFixed(2);
+    setResult(predicted_value)
 
     setLoading(false);
   };
@@ -101,7 +89,7 @@ const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
             </div>
           ) : (
             <div className="mt-10 flex-col items-center">
-              <h5>Text Analysis Result: {result}</h5>
+              <h5>AI Generated Probability: {result} % </h5>
             </div>
           )}
         </>
