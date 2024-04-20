@@ -49,34 +49,17 @@ def calculate_burstiness(text):
 
     return burstiness_score
 
-
-
-text='''
-In a secluded village, where magic was shunned, lived a young girl named Elara. Despite the ban, she discovered her innate magical abilities. Fearing persecution, she practiced in secret, deep in the forest. Her determination was fueled by a desire to prove that magic could be a force for good. As her skills grew, she dreamt of a day when she could reveal her powers and change the villagers' hearts, showing them the true potential of magic to heal and protect. With each passing day, she inched closer to her goal, ready to challenge the age-old prejudices and bring a new era of acceptance and wonder to her world.'''
-
-p=calculate_perplexity(text)
-b=calculate_burstiness(text)
-
-print(p)
-print(b)
-
-if(p>30000 and b<0.2):
-    print("Ai generated content")
-else:
-    print('human content')
-
-
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins, you can specify specific origins
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],  # Allows specific methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["GET", "POST", "PUT", "DELETE"],  
+    allow_headers=["*"],  
 )
 
-@app.get('/get-perplexity/{text}')
+@app.get('/get-perplexity/{text}')  
 def get_perplexity(text: str):
 
   p=calculate_perplexity(text)
@@ -86,7 +69,7 @@ def get_perplexity(text: str):
 @app.get('/get-burstiness/{text}')
 def get_burstiness(text: str):
 
-  p=calculate_burstiness(text)
+  b=calculate_burstiness(text)
 
   return {"burstiness": b}
 
