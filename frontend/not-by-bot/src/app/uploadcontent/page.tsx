@@ -45,6 +45,7 @@ const page = () => {
   const [contentData, setContentData] = useState([]);
   const [apiResult, setApiResult] = useState();
   const [apiLoader, setApiLoader] = useState(false);
+  const [submitLoader, setSubmitLoader] = useState(false);
 
   useEffect(() => {
     onOpen();
@@ -110,16 +111,14 @@ const page = () => {
           let { data: users, error } = await supabase
             .from("users")
             .select("name")
-            .eq("id",user.id);
+            .eq("id", user.id);
 
-            if(users){
-              return users[0].name
-            }
-
+          if (users) {
+            return users[0].name;
+          }
         } catch (error) {
           console.log(error);
         }
-
       }
     } catch (error) {
       console.log(error);
@@ -128,16 +127,15 @@ const page = () => {
 
   const uploadData = async () => {
     try {
+      setSubmitLoader(true);
       const user_name = await getUserName();
-      
-      const content_object = {
-        
-        "title": title,
-        "subHeading": subHeading,
-        "readTime": readTime+" Min",
-        "data": contentData
 
-      }
+      const content_object = {
+        title: title,
+        subHeading: subHeading,
+        readTime: readTime + " Min",
+        data: contentData,
+      };
 
       const { data, error } = await supabase
         .from("all_content")
@@ -149,17 +147,19 @@ const page = () => {
             content_owner_id: "",
             content_owner_name: user_name,
             content: content_object,
-            content_likes: []
-
+            content_likes: [],
           },
         ])
         .select();
 
       if (data) {
-        console.log(data);
+        let contentID = data[0]?.content_id;
+        window.location.href = `http://localhost:3000/viewPost?id=${contentID}`;
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setSubmitLoader(false);
     }
   };
 
@@ -340,7 +340,7 @@ const page = () => {
                       {configStatus ? (
                         <>
                           <Button color="primary" onPress={onClose}>
-                            Submit
+                            See Preview
                           </Button>
                         </>
                       ) : (
@@ -412,13 +412,18 @@ const page = () => {
                         <p className="text-green-500">
                           Your Content has passed our checks
                         </p>
-                        <Button
-                          variant="light"
-                          color="warning"
-                          onPress={() => uploadData()}
-                        >
-                          Upload Data
-                        </Button>
+
+                        {submitLoader ? (
+                          <Spinner color="warning" />
+                        ) : (
+                          <Button
+                            variant="light"
+                            color="warning"
+                            onPress={() => uploadData()}
+                          >
+                            Upload Data
+                          </Button>
+                        )}
                       </>
                     ) : (
                       <>
