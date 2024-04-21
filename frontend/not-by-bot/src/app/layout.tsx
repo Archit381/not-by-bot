@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className="bg-[#070815] text-white">
         <Header />
         <main>{children}</main>
-        <Footer />
+        {/* <Footer /> */}
       </body>
       
       <PrismicPreview repositoryName={repositoryName} />

@@ -25,7 +25,7 @@ interface Item {
   content_genre: string;
   content_name: string;
   content_img: string;
-  content_likes: number;
+  content_likes: string[];
   content_owner_id: string;
 }
 
@@ -193,7 +193,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ data }) => {
                     </h4>
                     <small className="flex items-center ">
                       <FaRegHeart className="mr-1" />
-                      {item?.content_likes}
+                      <p className="text-white">{Array.isArray(item.content_likes) ? item.content_likes.length : 10}</p>
                     </small>
                   </div>
 

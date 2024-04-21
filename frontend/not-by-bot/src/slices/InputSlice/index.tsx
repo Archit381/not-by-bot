@@ -89,7 +89,7 @@ const InputSlice = ({ slice }: InputSliceProps): JSX.Element => {
             </div>
           ) : (
             <div className="mt-10 flex-col items-center">
-              <h5>AI Generated Probability: {result} % </h5>
+              <h5>Human written Probability: {result} % </h5>
             </div>
           )}
         </>

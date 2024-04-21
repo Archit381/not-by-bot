@@ -50,9 +50,9 @@ const page = () => {
     };
 
     const checkLiked = (postData: any, userId: string) => {
-      let likes_array = postData.content_likes;
+      let likes_array = postData?.content_likes;
 
-      if (!likes_array.includes(userId)) {
+      if (!likes_array?.includes(userId)) {
         setLiked(false);
       } else {
         setLiked(true);
@@ -253,7 +253,7 @@ const page = () => {
           {data?.content?.data?.map((item: Item) => {
             return (
               <div>
-                {item.type === "p" ? (
+                {item.type === "Paragraph" ? (
                   <div style={{ fontSize: 17, marginTop: 20 }}>{item.text}</div>
                 ) : (
                   <div
