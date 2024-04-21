@@ -9,7 +9,7 @@ import { Button } from "@nextui-org/react";
 import supabase from "../../../supabase";
 import { useEffect, useState } from "react";
 import Logout from "./auth/logout";
-import AccountLogo from "./accountLogo";
+import AccountLogo from "./AccountLogo";
 
 type NavBarProps = {
   settings: Content.SettingsDocument;
